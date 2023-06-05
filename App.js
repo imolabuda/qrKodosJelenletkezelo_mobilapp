@@ -13,8 +13,12 @@
 import * as Location from 'expo-location';
 import React from "react";
 import { NativeBaseProvider, Box } from "native-base";
-import LoginForm from "./components/LoginForm";
-import QRCodeScanner from './components/QRCodeScanner';
+import LoginScreen from "./screens/LoginScreen";
+import QRCodeScanner from './screens/QRCodeScanner';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
 
@@ -31,9 +35,12 @@ export default function App() {
 //   }, []);
 
   return (
-    <NativeBaseProvider>
-      <QRCodeScanner/>
-    </NativeBaseProvider>
+    <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen options={{ headearShown: false}} name="Login" component={LoginScreen} />
+      <Stack.Screen name="QR code scanned" component={QRCodeScanner} />
+    </Stack.Navigator>
+    </NavigationContainer>
   );
     
 }
