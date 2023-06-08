@@ -1,10 +1,11 @@
 import { authentication } from '../firebase';
-import { TextInput, Button, StyleSheet, Text, View, } from 'react-native';
+import { TextInput, Button, StyleSheet, Text, View,  KeyboardAvoidingView, } from 'react-native';
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import React, { useState, useEffect, } from "react";
 import { Drawer } from 'native-base';
 import QRCodeScanner from './QRCodeScanner';
 import { useNavigation } from '@react-navigation/native';
+import RegisterScreen from './RegisterScreen';
 
 export default function LoginScreen (props) {
 
@@ -43,25 +44,62 @@ export default function LoginScreen (props) {
   };
 
   return (
-    <View>
-      <TextInput placeholder='Email' value={email} onChangeText={text => setEmail(text)} style={{marginTop:30}}/>
-      <TextInput placeholder='Password' value={password} secureTextEntry={true} onChangeText={text => setPassword(text)}/>
-      {isSignedIn===true?
-        <Button title='Sign out' onPress={SignOutUser}/>
-        :
-        <Button title='Sign in' onPress={SignInUser}/>
-      }
+    <KeyboardAvoidingView
+       style = {styles.container}
+       behavior = "padding"
+    >
+      <View style={styles.inputContainer}>
+        <Text style={styles.text}>Email address</Text>
+        <TextInput placeholder='Email..' value={email} onChangeText={text => setEmail(text)} style = {styles.input}/>
+        <Text style={styles.text}>Password</Text>
+        <TextInput placeholder='Password..' value={password} secureTextEntry={true} onChangeText={text => setPassword(text)} style = {styles.input}/>
+        {isSignedIn===true?
+          <Button title='Sign out' onPress={SignOutUser} style={styles.button}/>
+          :
+          <Button title='Sign in' onPress={SignInUser} style={styles.button}/>
+        }
 
-      <Button title='Register' onPress={onPress}/>
-      
-    </View>
+        <Button title='Register' style = {[styles.button, styles.buttonOutline]} onPress={onPress}/>
+      </View>
+    </KeyboardAvoidingView>
   );
-    
 }
 
-
-
-
+const styles =  StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text:{
+    fontWeight: '300',
+    fontSize: 16,
+    marginTop: 10,
+  },
+  inputContainer: {
+    width: '80%',
+  },
+  input:{
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 5,
+  },
+  button: {
+      backgroundColor: '#0782F9',
+      padding: 15,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginTop: 50
+  },
+  buttonOutline: {
+    backgroundColor: 'white',
+    marginTop: 50,
+    borderColor: '#0782F9',
+    borderWidth: 2,
+  },
+});
 
 
 
