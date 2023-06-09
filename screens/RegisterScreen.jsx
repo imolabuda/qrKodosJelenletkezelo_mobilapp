@@ -3,6 +3,8 @@ import { TextInput, Button, StyleSheet, Text, View, Pressable, Platform, Keyboar
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState, useEffect, } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { getFirestore, collection, getDocs, doc, setDoc, addDoc } from 'firebase/firestore/lite';
+import { db } from '../firebase';
 
 export default function RegisterScreen(props) {
 
@@ -22,6 +24,7 @@ export default function RegisterScreen(props) {
     .then((re) => {
       console.log(re);
       console.log(email);
+      getData();
       onPress();
     })
     .catch((err) => {
@@ -45,6 +48,25 @@ export default function RegisterScreen(props) {
         toggleDatepicker();
     }
   };
+
+  const getData = async () => {
+    // const studentsCollection = collection(db, 'Students');
+    // const studentSnapshot = await getDocs(studentsCollection);
+    // const studentList = studentSnapshot.docs.map(doc => doc.data());
+    // console.log(studentList);
+
+    try {
+      const document = await addDoc(collection(db, "Students"), {
+        dateOfBirth: dateOfBirth,
+        studentEmail: email,
+        studentName: name,
+        studentPassword: password,
+      });
+      console.log("Document written with ID: ", document.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
 
   return (
     <KeyboardAvoidingView
