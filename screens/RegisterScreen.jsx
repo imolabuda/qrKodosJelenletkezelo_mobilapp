@@ -6,6 +6,19 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { getFirestore, collection, getDocs, doc, setDoc, addDoc } from 'firebase/firestore/lite';
 import { db } from '../firebase';
 
+// import bcrypt from 'bcryptjs';
+
+// import isaac from "isaac";
+
+// bcrypt.setRandomFallback((len) => {
+// 	const buf = new Uint8Array(len);
+
+// 	return buf.map(() => Math.floor(isaac.random() * 256));
+// });
+// // SALT should be created ONE TIME upon sign up
+// const salt = bcrypt.genSaltSync(10)
+// const hashedPassword = ""
+
 export default function RegisterScreen(props) {
 
   const [email, setEmail] = useState('');
@@ -20,6 +33,8 @@ export default function RegisterScreen(props) {
   };
 
   const RegisterUser = () => {
+    //hashedPassword = bcrypt.hashSync(password, '$2a$10$CwTycUXWue0Thq9StjUM0u')
+    //setPassword(bcrypt.hashSync(password, '$2a$10$CwTycUXWue0Thq9StjUM0u'));
     createUserWithEmailAndPassword(authentication, email, password)
     .then((re) => {
       console.log(re);
@@ -60,7 +75,6 @@ export default function RegisterScreen(props) {
         dateOfBirth: dateOfBirth,
         studentEmail: email,
         studentName: name,
-        studentPassword: password,
       });
       console.log("Document written with ID: ", document.id);
     } catch (e) {
