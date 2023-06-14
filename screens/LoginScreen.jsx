@@ -19,6 +19,7 @@ export default function LoginScreen (props) {
       setIsSignedIn(true);
       console.log(email);
       onPress2();
+      authentication.isSignedIn
     })
     .catch((err) => {
       console.log(err);

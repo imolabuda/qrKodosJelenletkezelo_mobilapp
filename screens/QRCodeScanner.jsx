@@ -24,6 +24,18 @@ function QRCodeScanner(){
         setScanned(true);
         setText(data);
         console.log('Type: ' + type + '\nData' + data);
+        fetch('https://us-central1-qrcodeproject-c6d04.cloudfunctions.net/createAttendence', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+        },
+            body: JSON.stringify({
+                attendenceToken: text,
+                classID: 19,
+                studentID: 58,
+            }),
+        });
     }
 
     //check permission and return the screens
