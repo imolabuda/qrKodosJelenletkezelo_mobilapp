@@ -33,8 +33,6 @@ export default function RegisterScreen(props) {
   };
 
   const RegisterUser = () => {
-    //hashedPassword = bcrypt.hashSync(password, '$2a$10$CwTycUXWue0Thq9StjUM0u')
-    //setPassword(bcrypt.hashSync(password, '$2a$10$CwTycUXWue0Thq9StjUM0u'));
     createUserWithEmailAndPassword(authentication, email, password)
     .then((re) => {
       console.log(re);
@@ -65,11 +63,6 @@ export default function RegisterScreen(props) {
   };
 
   const getData = async () => {
-    // const studentsCollection = collection(db, 'Students');
-    // const studentSnapshot = await getDocs(studentsCollection);
-    // const studentList = studentSnapshot.docs.map(doc => doc.data());
-    // console.log(studentList);
-
     try {
       const document = await addDoc(collection(db, "Students"), {
         dateOfBirth: dateOfBirth,

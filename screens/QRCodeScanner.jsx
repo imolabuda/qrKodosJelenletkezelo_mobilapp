@@ -1,11 +1,14 @@
 import React, { useState, useEffect, } from 'react';
 import { StyleSheet, Text, View, Button, } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { getAuth, onAuthStateChanged, } from "firebase/auth";
+import { getFunctions, httpsCallable, } from "firebase/functions";
 
 function QRCodeScanner(){
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
-    const [text, setText] = useState('Not yet scanned');
+    const [token, setToken] = useState('Not yet scanned');
+    const auth = getAuth();
 
     const askForCameraPermission = () => {
         (async () =>{
@@ -22,20 +25,38 @@ function QRCodeScanner(){
     //what happens when we scan qrcode
     const handleQRCOdeScanned = ({type, data}) => {
         setScanned(true);
-        setText(data);
+        setToken(data);
         console.log('Type: ' + type + '\nData' + data);
-        fetch('https://us-central1-qrcodeproject-c6d04.cloudfunctions.net/createAttendence', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-        },
-            body: JSON.stringify({
-                attendenceToken: text,
-                classID: 19,
-                studentID: 58,
-            }),
-        });
+        //leellenorizni, hogy a qrcodes tablaban milyen tantargyhoz tartozik a qr kod - ez lesz a classID
+
+        try{
+            const user = auth.currentUser;
+            const functions = getFunctions();
+            const getAttendenceSuccessOrNot = httpsCallable(functions, 'getAttendenceSuccessOrNot');
+            
+            getAttendenceSuccessOrNot({email: user.email, token: data})
+                .then((result) => {
+                    console.log(result);
+                        //vigyen at egy masik oldalra, ahol kiirja, hogy sikeresen beirodott a jelenlet
+                
+                });
+
+        //     fetch('https://us-central1-qrcodeproject-c6d04.cloudfunctions.net/createAttendence', {
+        //     method: 'POST',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json',
+        // },
+        //     body: JSON.stringify({
+        //         attendenceToken: token,
+        //         classID: ,
+        //         studentID: 58,
+        //     }),
+        // });
+        } catch(error){
+            console.log(error);
+        }
+        
     }
 
     //check permission and return the screens
@@ -62,7 +83,7 @@ function QRCodeScanner(){
             <View style={styles.qrcodebox}>
                 <BarCodeScanner onBarCodeScanned={ scanned ? undefined : handleQRCOdeScanned} style = {{ height: 550, width: 500, }}/>
             </View>
-            <Text style = {styles.textarea}>{text}</Text>
+            <Text style = {styles.textarea}>{token}</Text>
 
             {/* {scanned && <Button title={'Scan again!'} onPress={() => setScanned(false)} style={styles.scanagainbutton}/>} */}
         </View>
