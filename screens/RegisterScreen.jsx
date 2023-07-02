@@ -114,7 +114,9 @@ export default function RegisterScreen(props) {
         <Text style={styles.text}>Password</Text>
         <TextInput placeholder='Password..' value={password} secureTextEntry={true} onChangeText={text => setPassword(text)} style={styles.input}/>
 
-        <Button title='Register' style={styles.button} onPress={RegisterUser}/>
+        <View style={styles.buttonBox}>
+          <Button title='Register' style={styles.button} onPress={RegisterUser}/>
+        </View>
         
       </View>
     </KeyboardAvoidingView>
@@ -162,5 +164,8 @@ const styles =  StyleSheet.create({
       marginTop: 5,
       borderColor: '#0782F9',
       borderWidth: 2,
+    },
+    buttonBox: {
+      marginTop: 15,
     },
   });

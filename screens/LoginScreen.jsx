@@ -12,7 +12,7 @@ export default function LoginScreen (props) {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  
   const SignInUser = () => {
     signInWithEmailAndPassword(authentication, email, password)
     .then((re) => {
@@ -54,13 +54,17 @@ export default function LoginScreen (props) {
         <TextInput placeholder='Email..' value={email} onChangeText={text => setEmail(text)} style = {styles.input}/>
         <Text style={styles.text}>Password</Text>
         <TextInput placeholder='Password..' value={password} secureTextEntry={true} onChangeText={text => setPassword(text)} style = {styles.input}/>
+
+        <View style={styles.buttonBox}>
         {isSignedIn===true?
           <Button title='Sign out' onPress={SignOutUser} style={styles.button}/>
           :
           <Button title='Sign in' onPress={SignInUser} style={styles.button}/>
         }
-
+        </View>
+        <View style={styles.buttonBox}>
         <Button title='Register' style = {[styles.button, styles.buttonOutline]} onPress={onPress}/>
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -87,12 +91,15 @@ const styles =  StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
   },
+  buttonBox: {
+    marginTop: 15,
+  },
   button: {
       backgroundColor: '#0782F9',
       padding: 15,
       borderRadius: 10,
       alignItems: 'center',
-      marginTop: 50
+      //margin: 50
   },
   buttonOutline: {
     backgroundColor: 'white',
